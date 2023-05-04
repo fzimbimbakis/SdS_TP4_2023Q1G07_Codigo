@@ -17,12 +17,12 @@ def read_file(name):
 
 if __name__ == '__main__':
 
-    dts = [0.1, 0.01, 0.001, 0.0001, 0.00001]
+    dts = [0.01, 0.001, 0.0001, 0.00001]
     verlet_err = []
     gear_err = []
     beeman_err = []
 
-    for i in range(1, 6):
+    for i in range(1, 5):
         sol_time, sol_pos = read_file("../resources/solution"+str(i)+".txt")
 
         verlet_time, verlet_pos = read_file("../resources/verlet"+str(i)+".txt")
@@ -42,6 +42,8 @@ if __name__ == '__main__':
     plt.scatter(dts, beeman_err, label="Beeman")
     plt.plot(dts, gear_err)
     plt.scatter(dts, gear_err, label="Gear predictor corrector")
+    plt.xlabel('Dts')
+    plt.ylabel('Error cuadrático medio')
     plt.semilogy()
     plt.semilogx()
     plt.legend()
