@@ -36,8 +36,8 @@ public class DampedOscillator {
         List<String> gearList = new ArrayList<>();
         List<String> solutionList = new ArrayList<>();
 
-        OscillatorParticle verletParticle = beeman.getParticle();
-        OscillatorParticle beemanParticle = verlet.getParticle();
+        OscillatorParticle verletParticle = verlet.getParticle();
+        OscillatorParticle beemanParticle = beeman.getParticle();
         OscillatorParticle gearParticle = gearPredictorCorrector.getParticle();
         int tf = 5;
         for (double t = 0; t <= tf; t+=dt ) {

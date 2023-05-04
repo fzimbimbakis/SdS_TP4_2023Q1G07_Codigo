@@ -36,9 +36,11 @@ public class Beeman {
         double newX = particle.getX() + particle.getV()*dt + (2.0/3.0)*particle.getA()*dt2 - (1.0/6.0)*prevA*dt2;
 
 
-        double predictedX = particle.getX() + particle.getV() * dt + 0.5 * particle.getA() * dt2;
-        double predictedV = particle.getV() + 0.5 * (3 * particle.getA() - prevA) * dt;
-        double predictedA = (-k * predictedX - gamma * predictedV)/ particle.getMass();
+        //double predictedX = particle.getX() + particle.getV() * dt + 0.5 * particle.getA() * dt2;
+        //double predictedV = particle.getV() + 0.5 * (3 * particle.getA() - prevA) * dt;
+        //double predictedA = (-k * predictedX - gamma * predictedV)/ particle.getMass();
+        double predictedV = particle.getV() + 1.5*particle.getA()*dt - 0.5*prevA*dt;
+        double predictedA = (-k * newX - gamma * predictedV)/ particle.getMass();
 
         double newV = particle.getV() + (1.0/3.0)*predictedA*dt + (5.0/6.0)* particle.getA()*dt - (1.0/6.0)*prevA*dt;
 

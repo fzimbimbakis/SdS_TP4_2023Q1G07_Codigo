@@ -16,35 +16,22 @@ def read_file(name):
 
 
 if __name__ == '__main__':
-    plt.xlabel('Tiempo')
-    plt.ylabel('Posicion')
+
     time, pos = read_file("../resources/verlet1.txt")
-    plt.plot(time, pos)
-    #plt.legend()
-    plt.savefig("../resources/verlet.png")
-    plt.clf()
+    plt.plot(time, pos, label="Verlet")
 
-    plt.xlabel('Tiempo')
-    plt.ylabel('Posicion')
     time1, pos1 = read_file("../resources/beeman1.txt")
-    plt.plot(time1, pos1)
-    #plt.legend()
-    plt.savefig("../resources/beeman.png")
-    plt.clf()
+    plt.plot(time1, pos1, label="Beeman")
 
-    plt.xlabel('Tiempo')
-    plt.ylabel('Posicion')
     time2, pos2 = read_file("../resources/solution1.txt")
-    plt.plot(time2, pos2)
-    #plt.legend()
-    plt.savefig("../resources/solution.png")
-    plt.clf()
+    plt.plot(time2, pos2, label="Analytic solution")
 
-    plt.xlabel('Tiempo')
-    plt.ylabel('Posicion')
     time3, pos3 = read_file("../resources/gear1.txt")
-    plt.plot(time3, pos3)
-    #plt.legend()
-    plt.savefig("../resources/gear.png")
+    plt.plot(time3, pos3, label="Gear predictor corrector")
+
+    plt.xlabel('Tiempo [s]')
+    plt.ylabel('Posicion [m]')
+    plt.legend()
+    plt.savefig("../resources/graph.png")
 
 
