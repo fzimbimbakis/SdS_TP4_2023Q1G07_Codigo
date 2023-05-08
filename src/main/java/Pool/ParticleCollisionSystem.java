@@ -1,5 +1,7 @@
-import models.Collision;
-import models.Particle;
+package Pool;
+
+import Pool.models.Collision;
+import Pool.models.Particle;
 import utils.JsonConfigReader;
 import utils.Ovito;
 import utils.ParticleUtils;

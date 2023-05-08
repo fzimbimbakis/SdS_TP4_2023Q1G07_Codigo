@@ -1,4 +1,4 @@
-package models;
+package DampedOscillator.models;
 
 public class OscillatorParticle {
 

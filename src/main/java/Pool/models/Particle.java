@@ -1,4 +1,4 @@
-package models;
+package Pool.models;
 
 
 public class Particle{

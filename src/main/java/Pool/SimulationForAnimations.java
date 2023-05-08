@@ -1,3 +1,5 @@
+package Pool;
+
 import utils.JsonConfigReader;
 import utils.Ovito;
 

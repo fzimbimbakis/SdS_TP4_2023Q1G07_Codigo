@@ -1,6 +1,6 @@
-package algorithms;
+package Pool.algorithms;
 
-import models.OscillatorParticle;
+import DampedOscillator.models.OscillatorParticle;
 
 public class GearPredictorCorrector {
 

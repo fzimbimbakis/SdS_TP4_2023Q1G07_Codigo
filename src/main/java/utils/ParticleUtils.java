@@ -1,5 +1,6 @@
 package utils;
-import models.Particle;
+
+import Pool.models.Particle;
 
 import java.util.ArrayList;
 import java.util.List;

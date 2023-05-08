@@ -1,6 +1,6 @@
-package algorithms;
+package DampedOscillator.algorithms;
 
-import models.OscillatorParticle;
+import DampedOscillator.models.OscillatorParticle;
 
 public class Verlet{
 

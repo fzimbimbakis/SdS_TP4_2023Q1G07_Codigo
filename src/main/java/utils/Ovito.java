@@ -1,6 +1,6 @@
 package utils;
 
-import models.Particle;
+import Pool.models.Particle;
 
 import java.io.File;
 import java.io.FileWriter;

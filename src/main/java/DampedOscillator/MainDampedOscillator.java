@@ -1,4 +1,6 @@
-import models.DampedOscillator;
+package DampedOscillator;
+
+import DampedOscillator.models.DampedOscillator;
 
 public class MainDampedOscillator {
 
@@ -7,8 +9,8 @@ public class MainDampedOscillator {
         double[] dts = {0.01, 0.001, 0.0001, 0.00001};
 
         DampedOscillator dampedOscillator;
-        for (int i = 0; i < dts.length; i++) {
-            dampedOscillator = new DampedOscillator(dts[i]);
+        for (double dt : dts) {
+            dampedOscillator = new DampedOscillator(dt);
             dampedOscillator.run();
         }
     }

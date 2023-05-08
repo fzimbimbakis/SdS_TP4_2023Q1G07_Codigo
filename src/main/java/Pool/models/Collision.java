@@ -1,4 +1,4 @@
-package models;
+package Pool.models;
 
 public class Collision implements Comparable<Collision>{
 
