@@ -34,6 +34,10 @@ public class Particle {
 
     }
 
+    public void prediction(){
+        algorithm.prediction();
+    }
+
     private void updateForce(List<Particle> particles) {
         this.force.setX(0.0);
         this.force.setY(0.0);
@@ -84,6 +88,34 @@ public class Particle {
         return position.getY();
     }
 
+    public Double getVx() {
+        return velocity.getX();
+    }
+
+
+    public Double getVy() {
+        return velocity.getY();
+    }
+
+
+    public void setX(Double x) {
+        position.setX(x);
+    }
+
+
+    public void setY(Double y) {
+        position.setY(y);
+    }
+
+    public void setVx(Double Vx) {
+        velocity.setX(Vx);
+    }
+
+
+    public void setVy(Double Vy) {
+        velocity.setY(Vy);
+    }
+
 
     public Double getRadius() {
         return radius;
@@ -103,7 +135,14 @@ public class Particle {
         return position.getX() + " " + position.getY() + " " + velocity.getX() + " " + velocity.getY() + " " + radius + " 255 0 0";
     }
 
-    public Pair<Double> getForce() {
-        return force;
+    public Double getForceX() {
+        return force.getX();
     }
+
+    public Double getForceY() {
+        return force.getY();
+    }
+
+
+
 }

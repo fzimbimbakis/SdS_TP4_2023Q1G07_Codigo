@@ -11,9 +11,9 @@ import java.util.List;
 
 public class DynamicSystem {
 
-    private static final String CONFIG_PATH = "";
+    private static final String CONFIG_PATH = "./src/main/java/Pool/config.json";
 
-    public void run(){
+    public static void main(String[] args) {
 
         String path = Ovito.createFile("output", "xyz");
 
@@ -28,6 +28,10 @@ public class DynamicSystem {
 
         double time = 0.0;
         while (time < config.getMaxTime()){
+
+            for (Particle particle : particles) {
+                particle.prediction();
+            }
 
             for (Particle particle : particles) {
                 grid.remove(particle);

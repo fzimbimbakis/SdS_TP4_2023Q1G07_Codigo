@@ -1,42 +1,45 @@
 package Pool.algorithms;
 
-import DampedOscillator.models.OscillatorParticle;
+import Pool.models.particle.Particle;
 
-public class Verlet{
+public class Verlet implements DynamicsAlgorithm{
 
     // Algorithm information
     private double prevX;
+    private double prevY;
     private final double dt;
 
-    // oscillator information
-    private final double k;
-    private final double gamma;
+    private Particle particle;
 
-    private final OscillatorParticle particle;
-
-    public Verlet(double mass, double x, double v, double dt, double k, double gamma){
+    public Verlet(double dt){
         this.dt = dt;
-
-        this.k = k;
-        this.gamma = gamma;
-
-        particle = new OscillatorParticle(x, v, mass);
-
-        prevX = particle.getX() - dt*particle.getV() + (Math.pow(dt,2)/(2*particle.getMass()))*particle.getForce(k, gamma);
-
     }
 
 
-    public OscillatorParticle calculateNext(){
-        double newX = 2*particle.getX() - prevX + (Math.pow(dt,2)/ particle.getMass()) * particle.getForce(k, gamma);
-        particle.setV((newX - prevX)/(2*dt));
+    @Override
+    public void prediction() {
+
+    }
+
+    public void calculateNext(){
+        double newX = 2*particle.getX() - prevX + (Math.pow(dt,2)/ particle.getMass()) * particle.getForceX();
+        double newY = 2*particle.getY() - prevY + (Math.pow(dt,2)/ particle.getMass()) * particle.getForceY();
+
+        particle.setVx((newX - prevX)/(2*dt));
+        particle.setVy((newY - prevY)/(2*dt));
+
         prevX = particle.getX();
         particle.setX(newX);
-
-        return particle;
+        prevY = particle.getY();
+        particle.setY(newY);
     }
 
-    public OscillatorParticle getParticle(){
-        return particle;
+    @Override
+    public void setParticle(Particle particle) {
+        this.particle = particle;
+
+        prevX = particle.getX() - dt*particle.getVx() + (Math.pow(dt,2)/(2*particle.getMass()))*particle.getForceX();
+        prevY = particle.getY() - dt*particle.getVy() + (Math.pow(dt,2)/(2*particle.getMass()))*particle.getForceY();
     }
+
 }
