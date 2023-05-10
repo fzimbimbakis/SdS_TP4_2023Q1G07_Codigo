@@ -1,6 +1,6 @@
 package utils;
 
-import Pool.models.Particle;
+import Pool.models.particle.Particle;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -28,12 +28,24 @@ public class Ovito {
         }
     }
 
-    public static void writeParticlesToFileXyz(String filePath, Double time, List<Particle> particles, List<Particle> fixed, Particle A, Particle B) {
+    public static void writeParticlesToFileXyz(String filePath, List<Particle> particles, List<Particle> fixed) {
         try {
             FileWriter myWriter = new FileWriter(filePath, true);
-            myWriter.write((fixed.size() + particles.size()) + "\n" + time + " " + (A != null ? A.getNumber() : "---") + " " + (B != null ? B.getNumber() : "---") + "\n");
+            myWriter.write((fixed.size() + particles.size()) + "\n\n");
             for (Particle particle : fixed)
                 myWriter.write(particle.toString() + "\n");
+            for (Particle particle : particles)
+                myWriter.write(particle.toString() + "\n");
+            myWriter.close();
+        } catch (IOException e) {
+            throw new RuntimeException("Error writing particles to file (" + filePath + ") in ParticlesUtils.writeParticlesToFile.");
+        }
+    }
+
+    public static void writeParticlesToFileXyz(String filePath, List<Particle> particles) {
+        try {
+            FileWriter myWriter = new FileWriter(filePath, true);
+            myWriter.write(particles.size() + "\n\n");
             for (Particle particle : particles)
                 myWriter.write(particle.toString() + "\n");
             myWriter.close();
@@ -59,15 +71,15 @@ public class Ovito {
         }
     }
 
-    public static <T> void writeToFIle(T o, String file_path) {
-        try {
-            FileWriter myWriter = new FileWriter(file_path, true);
-            myWriter.write(o.toString());
-            myWriter.close();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
+//    public static <T> void writeToFIle(T o, String file_path) {
+//        try {
+//            FileWriter myWriter = new FileWriter(file_path, true);
+//            myWriter.write(o.toString());
+//            myWriter.close();
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
+//    }
 
 
 }

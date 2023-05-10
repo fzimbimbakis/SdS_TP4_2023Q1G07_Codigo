@@ -1,33 +1,31 @@
 package utils;
 
-import Pool.models.Particle;
+import Pool.algorithms.GearPredictorCorrector;
+import Pool.models.particle.FixedParticle;
+import Pool.models.particle.Particle;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ParticleUtils {
 
-    private static final boolean FIXED = true;
-
     private static Double randomEpsilon(Double min, Double max){
         return min + Math.random() * Math.abs(max - min);
     }
 
-    public static List<Particle> generateFixedParticles(JsonConfigReader config){
+    public static List<FixedParticle> generateFixedParticles(JsonConfigReader config){
         Double RADIUS = config.getRadius();
-        Double MASS = config.getMass();
 
-
-        List<Particle> list = new ArrayList<>();
+        List<FixedParticle> list = new ArrayList<>();
 
         //// Fixed
-        list.add(new Particle(0, 0, 0, 0, 2*RADIUS, MASS, FIXED, Particle.Color.BLACK, 101));
-        list.add(new Particle(config.getMaxX() / 2, 0, 0, 0, 2*RADIUS, MASS, FIXED, Particle.Color.BLACK, 102));
-        list.add(new Particle(config.getMaxX(), 0, 0, 0, 2*RADIUS, MASS, FIXED, Particle.Color.BLACK, 103));
+        list.add(new FixedParticle(0.0, 0.0, 2*RADIUS));
+        list.add(new FixedParticle(config.getMaxX() / 2, 0.0, 2*RADIUS));
+        list.add(new FixedParticle(config.getMaxX(), 0.0, 2*RADIUS));
 
-        list.add(new Particle(0, config.getMaxY(), 0, 0, 2*RADIUS, MASS, FIXED, Particle.Color.BLACK, 104));
-        list.add(new Particle(config.getMaxX() / 2, config.getMaxY(), 0, 0, 2*RADIUS, MASS, FIXED, Particle.Color.BLACK, 105));
-        list.add(new Particle(config.getMaxX(), config.getMaxY(), 0, 0, 2*RADIUS, MASS, FIXED, Particle.Color.BLACK, 106));
+        list.add(new FixedParticle(0.0, config.getMaxY(), 2*RADIUS));
+        list.add(new FixedParticle(config.getMaxX() / 2, config.getMaxY(), 2*RADIUS));
+        list.add(new FixedParticle(config.getMaxX(), config.getMaxY(), 2*RADIUS));
 
         return list;
     }
@@ -42,7 +40,7 @@ public class ParticleUtils {
         List<Particle> list = new ArrayList<>();
 
         //// White
-        list.add(new Particle(config.getWhiteX(), config.getWhiteY(), config.getWhiteV(), 0, RADIUS, MASS, !FIXED, Particle.Color.WHITE, -1));
+        list.add(new Particle(config.getWhiteX(), config.getWhiteY(), config.getWhiteV(), 0.0, RADIUS, MASS, new GearPredictorCorrector(config.getDt())));
 
         //// Default balls
         Double triangleX = config.getTriangleX();
@@ -53,10 +51,10 @@ public class ParticleUtils {
         double deltaX = Math.cos(Math.PI / 6) * (RADIUS * 2 + MAX_EPSILON);
 
         for (int i = 0; i < 5; i++) {
-            list.add(new Particle(triangleX + randomEpsilon(MIN_EPSILON, MAX_EPSILON), triangleY + randomEpsilon(MIN_EPSILON, MAX_EPSILON), 0, 0, RADIUS, MASS, !FIXED, Particle.Color.RED, i * n / 2));
+            list.add(new Particle(triangleX + randomEpsilon(MIN_EPSILON, MAX_EPSILON), triangleY + randomEpsilon(MIN_EPSILON, MAX_EPSILON), 0.0, 0.0, RADIUS, MASS, new GearPredictorCorrector(config.getDt())));
 
             for (int j = 1; j < n; j++) {
-                list.add(new Particle(triangleX + randomEpsilon(MIN_EPSILON, MAX_EPSILON), triangleY - j * deltaY + randomEpsilon(MIN_EPSILON, MAX_EPSILON), 0, 0, RADIUS, MASS, !FIXED, Particle.Color.RED, i * n / 2 + j));
+                list.add(new Particle(triangleX + randomEpsilon(MIN_EPSILON, MAX_EPSILON), triangleY - j * deltaY + randomEpsilon(MIN_EPSILON, MAX_EPSILON), 0.0, 0.0, RADIUS, MASS, new GearPredictorCorrector(config.getDt())));
             }
 
             n++;

@@ -20,6 +20,8 @@ public class JsonConfigReader {
     private final Double triangleY;
     private final Double minEpsilon;
     private final Double maxEpsilon;
+    private final Double dt;
+    private final Double maxTime;
 
     public JsonConfigReader(String jsonConfigFilePath) {
         JSONParser jsonParser = new JSONParser();
@@ -40,6 +42,8 @@ public class JsonConfigReader {
             this.triangleY = Double.parseDouble(jsonObject.get("triangle_y").toString());
             this.minEpsilon = Double.parseDouble(jsonObject.get("min_epsilon").toString());
             this.maxEpsilon = Double.parseDouble(jsonObject.get("max_epsilon").toString());
+            this.dt = Double.parseDouble(jsonObject.get("dt").toString());
+            this.maxTime = Double.parseDouble(jsonObject.get("max_t").toString());
 
         } catch (IOException | ParseException e) {
             throw new RuntimeException("Error reading parameters from config.json");
@@ -91,7 +95,11 @@ public class JsonConfigReader {
         return maxEpsilon;
     }
 
-    public void setWhiteY(Double whiteY) {
-        this.whiteY = whiteY;
+    public Double getDt() {
+        return dt;
+    }
+
+    public Double getMaxTime() {
+        return maxTime;
     }
 }
