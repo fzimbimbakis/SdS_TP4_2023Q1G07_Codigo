@@ -60,7 +60,19 @@ public class Particle {
 
 
     public Pair<Double> getInteractionForce(Particle particle) {
-        return null;
+
+        double radiusSum = particle.getRadius() + getRadius();
+
+        double deltaX = particle.getX() - getX();
+        double absDeltaX = Math.abs(deltaX);
+
+        double deltaY = particle.getY() - getY();
+        double absDeltaY = Math.abs(deltaY);
+
+        return new Pair<>(
+                K * (absDeltaX - radiusSum) + (deltaX/absDeltaX),
+                K * (absDeltaY - radiusSum) + (deltaY/absDeltaY)
+        );
     }
 
     public Double getX() {
