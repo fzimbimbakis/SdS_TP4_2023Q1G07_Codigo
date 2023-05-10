@@ -1,8 +1,8 @@
 package DampedOscillator.models;
 
-import Pool.algorithms.Beeman;
-import Pool.algorithms.GearPredictorCorrector;
-import Pool.algorithms.Verlet;
+import DampedOscillator.algorithms.Beeman;
+import DampedOscillator.algorithms.GearPredictorCorrector;
+import DampedOscillator.algorithms.Verlet;
 import utils.Ovito;
 
 import java.util.ArrayList;
