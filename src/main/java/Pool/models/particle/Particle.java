@@ -23,6 +23,7 @@ public class Particle {
         this.mass = mass;
         this.algorithm = algorithm;
         this.algorithm.setParticle(this);
+        this.force = new Pair<>(0.0, 0.0);
     }
 
 
@@ -72,21 +73,6 @@ public class Particle {
     }
 
 
-    public Pair<Double> getPosition() {
-        return position;
-    }
-
-
-    public Double getVx() {
-        return velocity.getX();
-    }
-
-
-    public Double getVy() {
-        return velocity.getY();
-    }
-
-
     public Double getRadius() {
         return radius;
     }
@@ -99,10 +85,6 @@ public class Particle {
         return Math.sqrt(
                 Math.pow(getX() - o.getX(), 2) + Math.pow(getY() - o.getY(), 2)
         ) - (getRadius() + radius);
-    }
-
-    public Pair<Double> getVelocity() {
-        return velocity;
     }
 
     public Double getMass() {

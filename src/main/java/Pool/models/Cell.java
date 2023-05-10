@@ -28,14 +28,6 @@ public class Cell implements Comparable<Cell>{
         return particles;
     }
 
-    public Pair<Double> getxLimits() {
-        return xLimits;
-    }
-
-    public Pair<Double> getyLimits() {
-        return yLimits;
-    }
-
     @Override
     public int compareTo(Cell o) {
         return Integer.compare(this.particles.size(), o.particles.size());

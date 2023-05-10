@@ -14,7 +14,7 @@ public class JsonConfigReader {
     private final Double maxX;
     private final Double maxY;
     private final Double whiteX;
-    private Double whiteY;
+    private final Double whiteY;
     private final Double whiteV;
     private final Double triangleX;
     private final Double triangleY;

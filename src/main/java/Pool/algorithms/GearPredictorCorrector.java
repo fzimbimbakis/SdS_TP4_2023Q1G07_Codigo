@@ -4,8 +4,10 @@ import Pool.models.particle.Particle;
 
 public class GearPredictorCorrector implements DynamicsAlgorithm {
 
-    public GearPredictorCorrector(Double dt) {
+    private final Double dt;
 
+    public GearPredictorCorrector(Double dt) {
+        this.dt = dt;
     }
 
     public void calculateNext() {
