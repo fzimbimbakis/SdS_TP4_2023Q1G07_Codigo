@@ -8,12 +8,8 @@ import java.util.List;
 public class Cell implements Comparable<Cell>{
 
     private final List<Particle> particles = new ArrayList<>();
-    private final Pair<Double> xLimits;
-    private final Pair<Double> yLimits;
 
-    public Cell(Pair<Double> xLimits, Pair<Double> yLimits) {
-        this.xLimits = xLimits;
-        this.yLimits = yLimits;
+    public Cell() {
     }
 
     public void add(Particle particle){

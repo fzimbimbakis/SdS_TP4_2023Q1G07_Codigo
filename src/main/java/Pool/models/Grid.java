@@ -67,14 +67,10 @@ public class Grid {
     }
 
     private void createCellsAndFillDataStructures(){
-        for (Double x = 0.0; x < MAX_X; x += CELL_DIMENSION){
+        for (double x = 0.0; x < MAX_X; x += CELL_DIMENSION){
             treeMap.put(x, new TreeMap<>());
-            for (Double y = 0.0; y < MAX_Y; y += CELL_DIMENSION) {
-                Cell newCell = new Cell(
-                        new Pair<>(x, x + CELL_DIMENSION),
-                        new Pair<>(y, y + CELL_DIMENSION)
-                );
-                treeMap.get(x).put(y, newCell);
+            for (double y = 0.0; y < MAX_Y; y += CELL_DIMENSION) {
+                treeMap.get(x).put(y, new Cell());
             }
         }
     }

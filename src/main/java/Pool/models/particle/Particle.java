@@ -14,7 +14,7 @@ public class Particle {
     private final Double radius;
     private final Double mass;
     private final DynamicsAlgorithm algorithm;
-    private Pair<Double> force;
+    private final Pair<Double> force;
 
     public Particle(Double x, Double y, Double vx, Double vy, Double radius, Double mass, DynamicsAlgorithm algorithm) {
         this.position = new Pair<>(x, y);
@@ -89,10 +89,6 @@ public class Particle {
         return radius;
     }
 
-    public Pair<Double> getForce() {
-        return force;
-    }
-
     public Double borderDistanceTo(Pair<Double> o, Double radius) {
         return Math.sqrt(
                 Math.pow(getX() - o.getX(), 2) + Math.pow(getY() - o.getY(), 2)
@@ -105,5 +101,9 @@ public class Particle {
 
     public String toString() {
         return position.getX() + " " + position.getY() + " " + velocity.getX() + " " + velocity.getY() + " " + radius + " 255 0 0";
+    }
+
+    public Pair<Double> getForce() {
+        return force;
     }
 }
