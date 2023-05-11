@@ -36,6 +36,10 @@ public class Pair<T> {
         return Objects.equals(x, pair.x) && Objects.equals(y, pair.y);
     }
 
+    public static<T> Pair<T> copy(Pair<T> pair){
+        return new Pair<>(pair.getX(), pair.getY());
+    }
+
     @Override
     public int hashCode() {
         return Objects.hash(x, y);

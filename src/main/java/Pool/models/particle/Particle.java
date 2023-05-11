@@ -157,4 +157,8 @@ public class Particle {
     public void setCell(Cell cell) {
         this.cell = cell;
     }
+
+    public Pair<Double> getPosition() {
+        return position;
+    }
 }
