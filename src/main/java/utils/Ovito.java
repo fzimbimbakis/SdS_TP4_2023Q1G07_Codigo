@@ -1,5 +1,6 @@
 package utils;
 
+import Pool.models.particle.FixedParticle;
 import Pool.models.particle.Particle;
 
 import java.io.File;
@@ -28,11 +29,11 @@ public class Ovito {
         }
     }
 
-    public static void writeParticlesToFileXyz(String filePath, List<Particle> particles, List<Particle> fixed) {
+    public static void writeParticlesToFileXyz(String filePath, List<Particle> particles, List<FixedParticle> fixed, String comment) {
         try {
             FileWriter myWriter = new FileWriter(filePath, true);
-            myWriter.write((fixed.size() + particles.size()) + "\n\n");
-            for (Particle particle : fixed)
+            myWriter.write((fixed.size() + particles.size()) + "\n" + comment + "\n");
+            for (FixedParticle particle : fixed)
                 myWriter.write(particle.toString() + "\n");
             for (Particle particle : particles)
                 myWriter.write(particle.toString() + "\n");
@@ -42,17 +43,21 @@ public class Ovito {
         }
     }
 
-    public static void writeParticlesToFileXyz(String filePath, List<Particle> particles) {
-        try {
-            FileWriter myWriter = new FileWriter(filePath, true);
-            myWriter.write(particles.size() + "\n\n");
-            for (Particle particle : particles)
-                myWriter.write(particle.toString() + "\n");
-            myWriter.close();
-        } catch (IOException e) {
-            throw new RuntimeException("Error writing particles to file (" + filePath + ") in ParticlesUtils.writeParticlesToFile.");
-        }
+    public static void writeParticlesToFileXyz(String filePath, List<Particle> particles, List<FixedParticle> fixed) {
+        writeParticlesToFileXyz(filePath, particles, fixed, "");
     }
+
+//    public static void writeParticlesToFileXyz(String filePath, List<Particle> particles) {
+//        try {
+//            FileWriter myWriter = new FileWriter(filePath, true);
+//            myWriter.write(particles.size() + "\n\n");
+//            for (Particle particle : particles)
+//                myWriter.write(particle.toString() + "\n");
+//            myWriter.close();
+//        } catch (IOException e) {
+//            throw new RuntimeException("Error writing particles to file (" + filePath + ") in ParticlesUtils.writeParticlesToFile.");
+//        }
+//    }
 
     public static <T> void writeListToFIle(List<T> list, String file_path, boolean end) {
         try {

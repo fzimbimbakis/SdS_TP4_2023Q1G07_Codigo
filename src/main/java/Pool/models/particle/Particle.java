@@ -1,14 +1,17 @@
 package Pool.models.particle;
 
 import Pool.algorithms.DynamicsAlgorithm;
+import Pool.algorithms.GearPredictorCorrector;
+import Pool.models.Cell;
 import Pool.models.Pair;
 
 import java.util.List;
 
 public class Particle {
+    private Cell cell;
     private static final Double MAX_X = 224.0;
     private static final Double MAX_Y = 112.0;
-    private static final Double K = 10000.0;
+    private static final Double K = 10000.0 / 100;
     private final Pair<Double> position;
     private final Pair<Double> velocity;
     private final Double radius;
@@ -16,14 +19,18 @@ public class Particle {
     private final DynamicsAlgorithm algorithm;
     private final Pair<Double> force;
 
+    public static Particle copy(Particle particle, Double dt){
+        return new Particle(particle.getX(), particle.getY(), particle.getVx(), particle.getVy(), particle.radius, particle.mass, new GearPredictorCorrector(dt));
+    }
+
     public Particle(Double x, Double y, Double vx, Double vy, Double radius, Double mass, DynamicsAlgorithm algorithm) {
         this.position = new Pair<>(x, y);
         this.velocity = new Pair<>(vx, vy);
         this.radius = radius;
         this.mass = mass;
         this.algorithm = algorithm;
-        this.algorithm.setParticle(this);
         this.force = new Pair<>(0.0, 0.0);
+        this.algorithm.setParticle(this);
     }
 
 
@@ -52,12 +59,12 @@ public class Particle {
         );
 
         if (position.getX() < 0)
-            this.force.setX(this.force.getX() + position.getX() * K);
+            this.force.setX(this.force.getX() - position.getX() * K);
         if (position.getX() > MAX_X)
             this.force.setX(this.force.getX() - (position.getX() - MAX_X) * K);
 
         if (position.getY() < 0)
-            this.force.setY(this.force.getY() + position.getY() * K);
+            this.force.setY(this.force.getY() - position.getY() * K);
         if (position.getY() > MAX_Y)
             this.force.setY(this.force.getY() - (position.getY() - MAX_Y) * K);
     }
@@ -74,8 +81,8 @@ public class Particle {
         double absDeltaY = Math.abs(deltaY);
 
         return new Pair<>(
-                K * (absDeltaX - radiusSum) + (deltaX/absDeltaX),
-                K * (absDeltaY - radiusSum) + (deltaY/absDeltaY)
+                K * (absDeltaX - radiusSum) * (deltaX/absDeltaX),
+                K * (absDeltaY - radiusSum) * (deltaY/absDeltaY)
         );
     }
 
@@ -143,6 +150,15 @@ public class Particle {
         return force.getY();
     }
 
+    public Cell getCell() {
+        return cell;
+    }
 
+    public void setCell(Cell cell) {
+        this.cell = cell;
+    }
 
+    public Pair<Double> getPosition() {
+        return position;
+    }
 }

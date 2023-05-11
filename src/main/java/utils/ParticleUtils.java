@@ -30,6 +30,22 @@ public class ParticleUtils {
         return list;
     }
 
+    public static List<FixedParticle> generateInvisible(JsonConfigReader config){
+
+        List<FixedParticle> list = new ArrayList<>();
+
+        //// Fixed
+        list.add(new FixedParticle(0.0, 0.0, 0.0));
+        list.add(new FixedParticle(config.getMaxX() / 2, 0.0, 0.0));
+        list.add(new FixedParticle(config.getMaxX(), 0.0, 0.0));
+
+        list.add(new FixedParticle(0.0, config.getMaxY(), 0.0));
+        list.add(new FixedParticle(config.getMaxX() / 2, config.getMaxY(), 0.0));
+        list.add(new FixedParticle(config.getMaxX(), config.getMaxY(), 0.0));
+
+        return list;
+    }
+
     public static List<Particle> generateInitialParticles(JsonConfigReader config){
 
         Double RADIUS = config.getRadius();

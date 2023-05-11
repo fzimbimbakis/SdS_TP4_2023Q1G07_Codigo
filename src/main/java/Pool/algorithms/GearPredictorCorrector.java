@@ -4,17 +4,26 @@ import Pool.models.particle.Particle;
 
 public class GearPredictorCorrector implements DynamicsAlgorithm {
 
-    private final Double dt;
     private Particle particle;
-    private Double[] rX = new Double[6];
-    private Double[] rY = new Double[6];
-    private final double[] alphas = {3.0/16, 251.0/360, 1, 11.0/18, 1.0/6, 1.0/60};
-    private final int[] factorial = {0, 1, 2, 6, 24, 120};
+    private final Double[] rX = new Double[6];
+    private final Double[] rY = new Double[6];
+    private static final double[] alphas = {3.0 / 16, 251.0 / 360, 1, 11.0 / 18, 1.0 / 6, 1.0 / 60};
 
+    private final double[] taylorCoef;
+    private final double[] alphaDividedTaylorCoef;
     private boolean initialStep = true;
 
     public GearPredictorCorrector(Double dt) {
-        this.dt = dt;
+        double dt2 = Math.pow(dt, 2);
+        double dt3 = Math.pow(dt, 3);
+        double dt4 = Math.pow(dt, 4);
+        double dt5 = Math.pow(dt, 5);
+        int[] factorial = {0, 1, 2, 6, 24, 120};
+        this.taylorCoef = new double[]{1, dt / factorial[1], dt2 / factorial[2], dt3 / factorial[3], dt4 / factorial[4], dt5 / factorial[5]};
+        alphaDividedTaylorCoef = new double[6];
+        for (int i = 0; i < 6; i++) {
+            alphaDividedTaylorCoef[i] = alphas[i] / taylorCoef[i];
+        }
     }
 
     @Override
@@ -42,8 +51,7 @@ public class GearPredictorCorrector implements DynamicsAlgorithm {
      * actualicen su posicion segun lo predecido y asi se calcule su respectivas fuerzas
      * en base a las posiciones predichas.
      * Cuando se tengan las fuerzas predichas de todas las particulas ahi se ejecuta el calculateNext
-     * */
-    /**
+     * ------
      * Se deberia llamar todo en este orden
      * 1) inicializo el algoritmo
      * 2) seteo la particula en el algoritmo
@@ -73,57 +81,37 @@ public class GearPredictorCorrector implements DynamicsAlgorithm {
         initialStep = false;
     }
 
-    private void predict(){
-        double dt2 = Math.pow(dt,2);
-        double dt3 = Math.pow(dt,3);
-        double dt4 = Math.pow(dt,4);
-        double dt5 = Math.pow(dt,5);
+    private void predict() {
 
-        rX[0] += rX[1]*dt + rX[2]*(dt2/2) + rX[3]*(dt3/factorial[3]) +
-                rX[4]*(dt4/factorial[4]) + rX[5]*(dt5/factorial[5]);
-        rX[1] += rX[2]*dt + rX[3]*(dt2/2) + rX[4]*(dt3/factorial[3]) +
-                rX[5]*(dt4/factorial[4]);
-        rX[2] += rX[3]*dt + rX[4]*(dt2/2) + rX[5]*(dt3/factorial[3]);
-        rX[3] += rX[4]*dt + rX[5]*(dt2/2);
-        rX[4] += rX[5]*dt;
-
-        rY[0] += rY[1]*dt + rY[2]*(dt2/2) + rY[3]*(dt3/factorial[3]) +
-                rY[4]*(dt4/factorial[4]) + rY[5]*(dt5/factorial[5]);
-        rY[1] += rY[2]*dt + rY[3]*(dt2/2) + rY[4]*(dt3/factorial[3]) +
-                rY[5]*(dt4/factorial[4]);
-        rY[2] += rY[3]*dt + rY[4]*(dt2/2) + rY[5]*(dt3/factorial[3]);
-        rY[3] += rY[4]*dt + rY[5]*(dt2/2);
-        rY[4] += rY[5]*dt;
+        for (int i = 0; i < 5; i++) {
+            for (int j = 1; j < 6 - i; j++) {
+                rX[i] += rX[j + i] * taylorCoef[j];
+                rY[i] += rY[j + i] * taylorCoef[j];
+            }
+        }
     }
 
     private double getDeltaR2x(){
         double a = particle.getForceX()/ particle.getMass();
         double deltaA = a - rX[2];
 
-        return (deltaA*Math.pow(dt,2))/2.0;
+        return deltaA * taylorCoef[2];
     }
 
     private double getDeltaR2y(){
         double a = particle.getForceY()/ particle.getMass();
         double deltaA = a - rY[2];
 
-        return (deltaA*Math.pow(dt,2))/2.0;
+        return deltaA * taylorCoef[2];
     }
 
-    private void correct(double deltaR2x, double deltaR2y){
-        rX[0] += alphas[0]*deltaR2x;
-        rX[1] += alphas[1]*deltaR2x*(factorial[1]/dt);
-        rX[2] += alphas[2]*deltaR2x*(factorial[2]/Math.pow(dt,2));
-        rX[3] += alphas[3]*deltaR2x*(factorial[3]/Math.pow(dt,3));
-        rX[4] += alphas[4]*deltaR2x*(factorial[4]/Math.pow(dt,4));
-        rX[5] += alphas[5]*deltaR2x*(factorial[5]/Math.pow(dt,5));
+    private void correct(double deltaR2x, double deltaR2y) {
 
-        rY[0] += alphas[0]*deltaR2y;
-        rY[1] += alphas[1]*deltaR2y*(factorial[1]/dt);
-        rY[2] += alphas[2]*deltaR2y*(factorial[2]/Math.pow(dt,2));
-        rY[3] += alphas[3]*deltaR2y*(factorial[3]/Math.pow(dt,3));
-        rY[4] += alphas[4]*deltaR2y*(factorial[4]/Math.pow(dt,4));
-        rY[5] += alphas[5]*deltaR2y*(factorial[5]/Math.pow(dt,5));
+        for (int i = 0; i < 6; i++) {
+            rX[i] += deltaR2x * alphaDividedTaylorCoef[i];
+            rY[i] += deltaR2y * alphaDividedTaylorCoef[i];
+        }
+
     }
 
 }
