@@ -56,7 +56,7 @@ public class ParticleUtils {
         List<Particle> list = new ArrayList<>();
 
         //// White
-        list.add(new Particle(config.getWhiteX(), config.getWhiteY(), config.getWhiteV(), 0.0, RADIUS, MASS, new GearPredictorCorrector(config.getDt())));
+        list.add(new Particle(config.getWhiteX(), config.getWhiteY(), config.getWhiteV(), 0.0, RADIUS, MASS, new GearPredictorCorrector(config.getDt()), Particle.Color.WHITE));
 
         //// Default balls
         Double triangleX = config.getTriangleX();
@@ -67,10 +67,10 @@ public class ParticleUtils {
         double deltaX = Math.cos(Math.PI / 6) * (RADIUS * 2 + MAX_EPSILON);
 
         for (int i = 0; i < 5; i++) {
-            list.add(new Particle(triangleX + randomEpsilon(MIN_EPSILON, MAX_EPSILON), triangleY + randomEpsilon(MIN_EPSILON, MAX_EPSILON), 0.0, 0.0, RADIUS, MASS, new GearPredictorCorrector(config.getDt())));
+            list.add(new Particle(triangleX + randomEpsilon(MIN_EPSILON, MAX_EPSILON), triangleY + randomEpsilon(MIN_EPSILON, MAX_EPSILON), 0.0, 0.0, RADIUS, MASS, new GearPredictorCorrector(config.getDt()), Particle.Color.RED));
 
             for (int j = 1; j < n; j++) {
-                list.add(new Particle(triangleX + randomEpsilon(MIN_EPSILON, MAX_EPSILON), triangleY - j * deltaY + randomEpsilon(MIN_EPSILON, MAX_EPSILON), 0.0, 0.0, RADIUS, MASS, new GearPredictorCorrector(config.getDt())));
+                list.add(new Particle(triangleX + randomEpsilon(MIN_EPSILON, MAX_EPSILON), triangleY - j * deltaY + randomEpsilon(MIN_EPSILON, MAX_EPSILON), 0.0, 0.0, RADIUS, MASS, new GearPredictorCorrector(config.getDt()), Particle.Color.RED));
             }
 
             n++;

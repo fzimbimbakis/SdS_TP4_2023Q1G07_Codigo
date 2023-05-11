@@ -9,6 +9,23 @@ import java.util.List;
 
 public class Particle {
     private Cell cell;
+    public enum Color{
+        RED(255, 0, 0),
+        GREEN(0, 255, 0),
+        BLUE(0, 0, 255),
+        ORANGE(244, 171, 0),
+        WHITE(255, 255, 255);
+        final int r;
+        final int g;
+        final int b;
+
+        Color(int r, int g, int b) {
+            this.r = r;
+            this.g = g;
+            this.b = b;
+        }
+    }
+    private Color color;
     private static final Double MAX_X = 224.0;
     private static final Double MAX_Y = 112.0;
     private static final Double K = 10000.0 / 100;
@@ -19,11 +36,12 @@ public class Particle {
     private final DynamicsAlgorithm algorithm;
     private final Pair<Double> force;
 
-    public static Particle copy(Particle particle, Double dt){
-        return new Particle(particle.getX(), particle.getY(), particle.getVx(), particle.getVy(), particle.radius, particle.mass, new GearPredictorCorrector(dt));
+    public static Particle copy(Particle particle, Double dt, Color color){
+        return new Particle(particle.getX(), particle.getY(), particle.getVx(), particle.getVy(), particle.radius, particle.mass, new GearPredictorCorrector(dt), color);
     }
 
-    public Particle(Double x, Double y, Double vx, Double vy, Double radius, Double mass, DynamicsAlgorithm algorithm) {
+    public Particle(Double x, Double y, Double vx, Double vy, Double radius, Double mass, DynamicsAlgorithm algorithm, Color color) {
+        this.color = color;
         this.position = new Pair<>(x, y);
         this.velocity = new Pair<>(vx, vy);
         this.radius = radius;
@@ -139,7 +157,7 @@ public class Particle {
     }
 
     public String toString() {
-        return position.getX() + " " + position.getY() + " " + velocity.getX() + " " + velocity.getY() + " " + radius + " 255 0 0";
+        return position.getX() + " " + position.getY() + " " + velocity.getX() + " " + velocity.getY() + " " + radius + " " + color.r + " " + color.g + " " + color.b;
     }
 
     public Double getForceX() {

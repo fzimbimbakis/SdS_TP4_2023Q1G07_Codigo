@@ -17,10 +17,10 @@ import java.util.concurrent.TimeUnit;
 public class VaryDt {
     private static final String CONFIG_PATH = "./src/main/java/Pool/config.json";
 
-    private static List<Particle> copy(List<Particle> particles, Double dt){
+    private static List<Particle> copy(List<Particle> particles, Double dt, Particle.Color color){
         List<Particle> copy = new ArrayList<>();
         for (Particle p : particles) {
-            copy.add(Particle.copy(p, dt));
+            copy.add(Particle.copy(p, dt, color));
         }
         return copy;
     }
@@ -39,10 +39,10 @@ public class VaryDt {
         List<DynamicSystem> systems = new ArrayList<>();
 
         // ejecuta algunas tareas en paralelo
-        for (int i = 2; i < 6; i++) {
+        for (int i = 2; i < 7; i++) {
             systems.add(
                     new DynamicSystem(
-                            copy(particles, Math.pow(10, -i)),
+                            copy(particles, Math.pow(10, -i), Particle.Color.values()[i - 2]),
                             fixedParticleList,
                             Math.pow(10, -i),
                             config.getMaxTime(),
@@ -59,7 +59,7 @@ public class VaryDt {
 
         // cierra el pool de threads
         executor.shutdown();
-        boolean termination = executor.awaitTermination(10, TimeUnit.MINUTES);
+        boolean termination = executor.awaitTermination(2, TimeUnit.HOURS);
 
         if (termination)
             System.out.println("Todos los threads han terminado.");
@@ -67,7 +67,7 @@ public class VaryDt {
 
         List<List<Double>> phis = new ArrayList<>();
 
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 4; i++) {
 
             phis.add(new ArrayList<>());
 
