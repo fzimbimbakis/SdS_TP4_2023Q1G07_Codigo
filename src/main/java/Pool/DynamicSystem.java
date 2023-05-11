@@ -44,7 +44,7 @@ public class DynamicSystem {
         grid.addAll(particles);
         Ovito.writeParticlesToFileXyz(outputPath, particles, fixedParticleList, dt.toString());
         double time = 0.0;
-        int counter = 0;
+        int counter = 1;
         while (time < maxT) {
 
             for (Particle particle : particles) {

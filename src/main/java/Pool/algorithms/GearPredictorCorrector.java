@@ -7,11 +7,11 @@ public class GearPredictorCorrector implements DynamicsAlgorithm {
     private Particle particle;
     private final Double[] rX = new Double[6];
     private final Double[] rY = new Double[6];
-    private static final double[] alphas = {3.0 / 16, 251.0 / 360, 1, 11.0 / 18, 1.0 / 6, 1.0 / 60};
+    private static final double[] alphas = {3.0 / 20, 251.0 / 360, 1, 11.0 / 18, 1.0 / 6, 1.0 / 60};
 
     private final double[] taylorCoef;
     private final double[] alphaDividedTaylorCoef;
-    private boolean initialStep = true;
+//    private boolean initialStep = true;
 
     public GearPredictorCorrector(Double dt) {
         double dt2 = Math.pow(dt, 2);
@@ -61,8 +61,7 @@ public class GearPredictorCorrector implements DynamicsAlgorithm {
      * */
     @Override
     public void prediction(){
-        if (!initialStep)
-            predict();
+        predict();
         particle.setX(rX[0]);
         particle.setY(rY[0]);
     }
@@ -78,7 +77,7 @@ public class GearPredictorCorrector implements DynamicsAlgorithm {
         particle.setVx(rX[1]);
         particle.setY(rY[0]);
         particle.setVy(rY[1]);
-        initialStep = false;
+//        initialStep = false;
     }
 
     private void predict() {
