@@ -3,34 +3,41 @@ package Pool;
 import Pool.models.Grid;
 import Pool.models.particle.FixedParticle;
 import Pool.models.particle.Particle;
-import utils.JsonConfigReader;
 import utils.Ovito;
-import utils.ParticleUtils;
 
 import java.util.List;
 
 public class DynamicSystem {
 
-    private static final String CONFIG_PATH = "./src/main/java/Pool/config.json";
+    private final List<Particle> particles;
+    private final List<FixedParticle> fixedParticleList;
+    private final Double dt;
+    private final Double maxT;
+    private final String outputPath;
+    private final int animationDT;
 
-    public static void main(String[] args) {
+    public DynamicSystem(List<Particle> particles, List<FixedParticle> fixedParticleList, Double dt, Double maxT, String outputPath, int animationDT) {
+        this.particles = particles;
+        this.fixedParticleList = fixedParticleList;
+        this.dt = dt;
+        this.maxT = maxT;
+        this.outputPath = outputPath;
+        this.animationDT = animationDT;
+    }
 
-        String path = Ovito.createFile("output", "xyz");
-
-        JsonConfigReader config = new JsonConfigReader(CONFIG_PATH);
-
-        List<FixedParticle> fixedParticleList = ParticleUtils.generateFixedParticles(config);
-
-        List<Particle> particles = ParticleUtils.generateInitialParticles(config);
+    public void run() {
 
         Grid grid = new Grid();
         grid.addAll(particles);
-
+        Ovito.writeParticlesToFileXyz(outputPath, particles, fixedParticleList, dt.toString());
         double time = 0.0;
-        while (time < config.getMaxTime()){
+        int counter = 0;
+        while (time < maxT) {
 
             for (Particle particle : particles) {
+                grid.remove(particle);
                 particle.prediction();
+                grid.add(particle);
             }
 
             for (Particle particle : particles) {
@@ -39,9 +46,10 @@ public class DynamicSystem {
                 grid.add(particle);
             }
 
-            Ovito.writeParticlesToFileXyz(path, particles);
+            if (counter++ % animationDT == 0)
+                Ovito.writeParticlesToFileXyz(outputPath, particles, fixedParticleList);
 
-            time += config.getDt();
+            time += dt;
 
         }
 

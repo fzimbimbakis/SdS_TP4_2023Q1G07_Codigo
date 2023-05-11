@@ -8,7 +8,7 @@ public class Grid {
 
     private static final Double MAX_X = 224.0;
     private static final Double MAX_Y = 112.0;
-    private static final Double CELL_DIMENSION = 7.0;
+    private static final Double CELL_DIMENSION = 5.7435897435897435897435897435897;
     private final TreeMap<Double, TreeMap<Double, Cell>> treeMap = new TreeMap<>();
 
     public Grid() {
@@ -38,26 +38,38 @@ public class Grid {
         return particles;
     }
 
-    public boolean remove(Particle particle){
-        Map.Entry<Double, TreeMap<Double, Cell>> EntryX = treeMap.floorEntry(particle.getX());
-        if (EntryX == null) {
-            return false;
-        }
-        Map.Entry<Double, Cell> EntryY = EntryX.getValue().floorEntry(particle.getY());
-        if (EntryY != null) {
-            return EntryY.getValue().remove(particle);
-        }
-        return false;
+    public void remove(Particle particle){
+        particle.getCell().remove(particle);
+        particle.setCell(null);
+//        double x = Math.min(MAX_X, particle.getX());
+//        x = Math.max(0, x);
+//        double y = Math.min(MAX_Y, particle.getY());
+//        y = Math.max(0, y);
+//        Map.Entry<Double, TreeMap<Double, Cell>> EntryX = treeMap.floorEntry(x);
+//        if (EntryX == null) {
+//            return false;
+//        }
+//        Map.Entry<Double, Cell> EntryY = EntryX.getValue().floorEntry(y);
+//        if (EntryY != null) {
+//            return EntryY.getValue().remove(particle);
+//        }
+//        return false;
     }
 
     public void add(Particle particle){
-        Map.Entry<Double, TreeMap<Double, Cell>> EntryX = treeMap.floorEntry(particle.getX());
+        double x = Math.min(MAX_X, particle.getX());
+        x = Math.max(0, x);
+        double y = Math.min(MAX_Y, particle.getY());
+        y = Math.max(0, y);
+        Map.Entry<Double, TreeMap<Double, Cell>> EntryX = treeMap.floorEntry(x);
         if (EntryX == null) {
             throw new IllegalStateException();
         }
-        Map.Entry<Double, Cell> EntryY = EntryX.getValue().floorEntry(particle.getY());
+        Map.Entry<Double, Cell> EntryY = EntryX.getValue().floorEntry(y);
         if (EntryY != null) {
             EntryY.getValue().add(particle);
+            particle.setCell(EntryY.getValue());
+            return;
         }
         throw new IllegalStateException();
     }
