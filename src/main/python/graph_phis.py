@@ -11,6 +11,9 @@ def main():
     with open('../resources/phi3.txt', 'r') as file:
          phi3 = [float(line) for line in file]
 
+    with open('../resources/phi4.txt', 'r') as file:
+        phi4 = [float(line) for line in file]
+
     # Creamos una figura y un subplot
     fig, ax = plt.subplots(1, 1)
 
@@ -18,7 +21,10 @@ def main():
     ax.plot([0.01 * i for i in range(0, 10001)], phi1, label='k = 2')
     ax.plot([0.01 * i for i in range(0, 10001)], phi2, label='k = 3')
     ax.plot([0.01 * i for i in range(0, 10001)], phi3, label='k = 4')
-    ax.set_xlim(-1, 20)
+    ax.plot([0.01 * i for i in range(0, 10001)], phi4, label='k = 5')
+    ax.set_xlim(-2, 5)
+    ax.set_xlabel('Tiempo (s)')
+    ax.set_ylabel('Diferencia entre posiciones (cm)')
     ax.set_yscale('log')
     ax.legend()
 
