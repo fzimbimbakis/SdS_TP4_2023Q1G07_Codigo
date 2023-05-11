@@ -5,18 +5,12 @@ import DampedOscillator.models.OscillatorParticle;
 public class GearPredictorCorrector {
 
     // Algorithm information
-    private double r0p;
-    private double r1p;
-    private double r2p;
-    private double r3p;
-    private double r4p;
-    private double r5p;
-    private double r0c;
-    private double r1c;
-    private double r2c;
-    private double r3c;
-    private double r4c;
-    private double r5c;
+    private double r0;
+    private double r1;
+    private double r2;
+    private double r3;
+    private double r4;
+    private double r5;
     private final double[] alphas = {3.0/16, 251.0/360, 1, 11.0/18, 1.0/6, 1.0/60};
 
     // oscillator information
@@ -47,19 +41,12 @@ public class GearPredictorCorrector {
         particle = new OscillatorParticle(x, v, (-k * x - gamma * v) / mass, mass);
 
         // Initial values
-        r0p = particle.getX();
-        r1p = particle.getV();
-        r2p = particle.getA();
-        r3p = (-(k) * r1p - (gamma) * r2p) / particle.getMass();
-        r4p = (-(k) * r2p - (gamma) * r3p) / particle.getMass();
-        r5p = (-(k) * r3p - (gamma) * r4p) / particle.getMass();
-
-        r0c = r0p;
-        r1c = r1p;
-        r2c = r2p;
-        r3c = r3p;
-        r4c = r4p;
-        r5c = r5p;
+        r0 = particle.getX();
+        r1 = particle.getV();
+        r2 = particle.getA();
+        r3 = (-(k) * r1 - (gamma) * r2) / particle.getMass();
+        r4 = (-(k) * r2 - (gamma) * r3) / particle.getMass();
+        r5 = (-(k) * r3 - (gamma) * r4) / particle.getMass();
 
     }
 
@@ -69,38 +56,37 @@ public class GearPredictorCorrector {
         double deltaR2 = getDeltaR2();
         correct(deltaR2);
 
-        particle.setX(r0c);
-        particle.setV(r1c);
-        particle.setA(r2c);
+        particle.setX(r0);
+        particle.setV(r1);
+        particle.setA(r2);
 
         return particle;
     }
 
     private void predict(){
-        r0p = r0c + r1c * taylorCoef[1] + r2c * (taylorCoef[2]) + r3c * (taylorCoef[3]) +
-                r4c * (taylorCoef[4]) + r5c * (taylorCoef[5]);
-        r1p = r1c + r2c * taylorCoef[1] + r3c * (taylorCoef[2]) +
-                r4c * (taylorCoef[3]) + r5c * (taylorCoef[4]);
-        r2p = r2c + r3c * taylorCoef[1] + r4c * (taylorCoef[2]) + r5c * (taylorCoef[3]);
-        r3p = r3c + r4c * taylorCoef[1] + r5c * (taylorCoef[2]);
-        r4p = r4c + r5c * taylorCoef[1];
-        r5p = r5c;
+        r0 += r1 * taylorCoef[1] + r2 * (taylorCoef[2]) + r3 * (taylorCoef[3]) +
+                r4 * (taylorCoef[4]) + r5 * (taylorCoef[5]);
+        r1 += r2 * taylorCoef[1] + r3 * (taylorCoef[2]) +
+                r4 * (taylorCoef[3]) + r5 * (taylorCoef[4]);
+        r2 += r3 * taylorCoef[1] + r4 * (taylorCoef[2]) + r5 * (taylorCoef[3]);
+        r3 += r4 * taylorCoef[1] + r5 * (taylorCoef[2]);
+        r4 += r5 * taylorCoef[1];
     }
 
     private double getDeltaR2(){
-        double a = (-k * r0p - gamma * r1p)/ particle.getMass();
-        double deltaA = a - r2p;
+        double a = (-k * r0 - gamma * r1)/ particle.getMass();
+        double deltaA = a - r2;
 
         return deltaA * (taylorCoef[2]);
     }
 
     private void correct(double deltaR2){
-        r0c = r0p + deltaR2 * alphaDividedTaylorCoef[0];
-        r1c = r1p + deltaR2 * alphaDividedTaylorCoef[1];
-        r2c = r2p + deltaR2 * alphaDividedTaylorCoef[2];
-        r3c = r3p + deltaR2 * alphaDividedTaylorCoef[3];
-        r4c = r4p + deltaR2 * alphaDividedTaylorCoef[4];
-        r5c = r5p + deltaR2 * alphaDividedTaylorCoef[5];
+        r0 += deltaR2 * alphaDividedTaylorCoef[0];
+        r1 += deltaR2 * alphaDividedTaylorCoef[1];
+        r2 += deltaR2 * alphaDividedTaylorCoef[2];
+        r3 += deltaR2 * alphaDividedTaylorCoef[3];
+        r4 += deltaR2 * alphaDividedTaylorCoef[4];
+        r5 += deltaR2 * alphaDividedTaylorCoef[5];
     }
 
     public OscillatorParticle getParticle(){
