@@ -8,7 +8,6 @@ import Pool.models.Pair;
 import java.util.List;
 
 public class Particle {
-    private Cell cell;
     public enum Color{
         RED(255, 0, 0),
         GREEN(0, 255, 0),
@@ -76,15 +75,15 @@ public class Particle {
                 }
         );
 
-        if (position.getX() < 0)
-            this.force.setX(this.force.getX() - position.getX() * K);
-        if (position.getX() > MAX_X)
-            this.force.setX(this.force.getX() - (position.getX() - MAX_X) * K);
+        if (position.getX() < this.radius)
+            this.force.setX(this.force.getX() - (position.getX() - this.radius) * K);
+        if (position.getX() > MAX_X - this.radius)
+            this.force.setX(this.force.getX() - (position.getX() - (MAX_X - this.radius)) * K);
 
-        if (position.getY() < 0)
-            this.force.setY(this.force.getY() - position.getY() * K);
-        if (position.getY() > MAX_Y)
-            this.force.setY(this.force.getY() - (position.getY() - MAX_Y) * K);
+        if (position.getY() < this.radius)
+            this.force.setY(this.force.getY() - (position.getY() - this.radius) * K);
+        if (position.getY() > MAX_Y - this.radius)
+            this.force.setY(this.force.getY() - (position.getY() - (MAX_Y - this.radius)) * K);
     }
 
 
@@ -93,14 +92,19 @@ public class Particle {
         double radiusSum = particle.getRadius() + getRadius();
 
         double deltaX = particle.getX() - getX();
-        double absDeltaX = Math.abs(deltaX);
-
         double deltaY = particle.getY() - getY();
-        double absDeltaY = Math.abs(deltaY);
+
+        double modulo = Math.sqrt(
+                Math.pow(deltaX, 2) + Math.pow(deltaY, 2)
+        );
+
+        double f = (modulo - radiusSum) * K;
+
+
 
         return new Pair<>(
-                K * (absDeltaX - radiusSum) * (deltaX/absDeltaX),
-                K * (absDeltaY - radiusSum) * (deltaY/absDeltaY)
+                (deltaX / modulo) * f,
+                (deltaY / modulo) * f
         );
     }
 
@@ -166,14 +170,6 @@ public class Particle {
 
     public Double getForceY() {
         return force.getY();
-    }
-
-    public Cell getCell() {
-        return cell;
-    }
-
-    public void setCell(Cell cell) {
-        this.cell = cell;
     }
 
     public Pair<Double> getPosition() {
