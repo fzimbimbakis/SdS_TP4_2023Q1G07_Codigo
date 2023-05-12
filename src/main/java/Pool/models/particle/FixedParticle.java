@@ -15,7 +15,7 @@ public class FixedParticle {
         this.radius = radius;
     }
 
-    List<Particle> getCollisions(List<Particle> particles) {
+    public List<Particle> getCollisions(List<Particle> particles) {
         List<Particle> collisions = new ArrayList<>();
         particles.forEach(
                 p -> {
@@ -28,5 +28,9 @@ public class FixedParticle {
 
     public String toString() {
         return position.getX() + " " + position.getY() + " " + 0.0 + " " + 0.0 + " " + radius + " 0 0 0";
+    }
+
+    public Pair<Double> getPosition() {
+        return position;
     }
 }

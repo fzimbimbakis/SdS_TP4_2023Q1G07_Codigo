@@ -24,11 +24,15 @@ public class Grid {
         Map.Entry<Double, Cell> EntryY;
 
         for (Double deltaX = -CELL_DIMENSION; deltaX <= CELL_DIMENSION; deltaX += CELL_DIMENSION){
+            if(x + deltaX > MAX_X)
+                continue;
             EntryX = treeMap.floorEntry(x + deltaX);
             if (EntryX == null) {
                 continue;
             }
             for (Double deltaY = -CELL_DIMENSION; deltaY <= CELL_DIMENSION; deltaY += CELL_DIMENSION){
+                if(y +deltaY > MAX_Y)
+                    continue;
                 EntryY = EntryX.getValue().floorEntry(y + deltaY);
                 if (EntryY != null) {
                     particles.addAll(EntryY.getValue().getParticles());
