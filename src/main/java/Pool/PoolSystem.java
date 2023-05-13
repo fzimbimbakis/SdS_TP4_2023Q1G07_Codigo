@@ -8,24 +8,27 @@ import utils.ParticleUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.DoubleStream;
 
 public class PoolSystem {
 
     private List<Particle> particles;
     private final List<FixedParticle> fixedParticleList;
     private final Double dt;
-    private Double finalTime;
     private final int expectedBallsIn;
     private final JsonConfigReader config;
     private final double whiteY;
     private final String outputPath;
     private final int animationDT;
+    private double mean;
+    private double std;
+    private double standardError;
 
     public PoolSystem(JsonConfigReader config, double whiteY, int ballsIn, String outputPath) {
         this.config = config;
         this.whiteY = whiteY;
         this.fixedParticleList = ParticleUtils.generateFixedParticles(config);
-        this.dt = 0.01;
+        this.dt = config.getDt();
         this.outputPath = outputPath;
         this.animationDT = 1;
         this.expectedBallsIn = ballsIn;
@@ -40,16 +43,16 @@ public class PoolSystem {
             Grid grid = new Grid();
             grid.addAll(particles);
 //            Ovito.writeParticlesToFileXyz(outputPath, particles, fixedParticleList, dt.toString());
-            double ft = 0.0;
-            int counter = 1;
+            Double ft = 0.0;
+//            int counter = 1;
             int ballsIn = 0;
             while (ballsIn < this.expectedBallsIn) {
 
-                for (Particle particle : particles) {
-                    grid.remove(particle);
-                    particle.prediction();
-                    grid.add(particle);
-                }
+//                for (Particle particle : particles) {
+//                    grid.remove(particle);
+//                    particle.prediction();
+//                    grid.add(particle);
+//                }
 
                 for (Particle particle : particles) {
                     grid.remove(particle);
@@ -76,12 +79,25 @@ public class PoolSystem {
             }
 
             totalTimes.add(ft);
-            this.finalTime += ft;
         }
+
+        DoubleStream stream = totalTimes.stream().mapToDouble(Double::doubleValue);
+        this.mean = stream.average().orElse(0.0); // Calcula el promedio
+        stream = totalTimes.stream().mapToDouble(Double::doubleValue);
+        this.std = Math.sqrt(stream.map(d -> Math.pow(d - mean, 2)).average().orElse(0.0)); // Calcula la desviación estándar
+        this.standardError = std / Math.sqrt(totalTimes.size());
 
     }
 
-    public Double getFinalTime() {
-        return finalTime;
+    public Double getMeanTime() {
+        return mean;
+    }
+
+    public Double getTimeStd() {
+        return std;
+    }
+
+    public Double getTimeStandardError() {
+        return standardError;
     }
 }

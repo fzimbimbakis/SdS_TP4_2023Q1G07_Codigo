@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 public class VaryWhiteY {
@@ -26,7 +27,7 @@ public class VaryWhiteY {
 
         for (double whiteY = yMin; whiteY < yMax; whiteY += (yMax - yMin) / nPositions) {
 
-            PoolSystem system = new PoolSystem(config, whiteY, 8, Ovito.createFile("pool", "xyz"));
+            PoolSystem system = new PoolSystem(config, whiteY, 8, null);
             list.add(system);
 
             Runnable worker = new ThreadAux(
@@ -36,16 +37,25 @@ public class VaryWhiteY {
             executor.execute(worker);
 
         }
+        executor.shutdown();
+        if(!executor.awaitTermination(10, TimeUnit.HOURS))
+            throw new IllegalStateException("Threads timeout");
 
         Ovito.writeListToFIle(
-                list.stream().map(PoolSystem::getFinalTime).collect(Collectors.toList()),
+                list.stream().map(PoolSystem::getMeanTime).collect(Collectors.toList()),
                 Ovito.createFile("pool_mean_times", "txt"),
                 true
         );
 
         Ovito.writeListToFIle(
-                list.stream().map(PoolSystem::getFinalTime).collect(Collectors.toList()),
-                Ovito.createFile("pool_mean_times", "txt"),
+                list.stream().map(PoolSystem::getTimeStd).collect(Collectors.toList()),
+                Ovito.createFile("pool_std_times", "txt"),
+                true
+        );
+
+        Ovito.writeListToFIle(
+                list.stream().map(PoolSystem::getTimeStandardError).collect(Collectors.toList()),
+                Ovito.createFile("pool_stdErr_times", "txt"),
                 true
         );
 

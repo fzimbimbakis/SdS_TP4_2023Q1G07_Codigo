@@ -23,7 +23,7 @@ public class Particle {
             this.b = b;
         }
     }
-    private Color color;
+    private final Color color;
     private static final Double MAX_X = 224.0;
     private static final Double MAX_Y = 112.0;
     private static final Double K = 10000.0 / 100;
@@ -55,10 +55,6 @@ public class Particle {
         this.updateForce(particles);
         this.algorithm.calculateNext();
 
-    }
-
-    public void prediction(){
-        algorithm.prediction();
     }
 
     private void updateForce(List<Particle> particles) {
