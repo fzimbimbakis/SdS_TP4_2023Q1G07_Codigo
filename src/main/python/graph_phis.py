@@ -34,7 +34,7 @@ def main():
 
     plt.clf()
 
-    n = 2000
+    n = 5000
     n_sqrt = n**(1/2)
 
     mean1 = np.mean(np.array(phi1[:n]))
@@ -51,7 +51,7 @@ def main():
     std = [std1, std2, std3, std4]
 
     plt.errorbar(values, mean, yerr=std, fmt='o', markersize=5, capsize=2)
-    plt.ylim(0, 500)
+    plt.ylim(0, 1500)
     plt.ylabel('Diferencia promedio (cm)')
     plt.xlabel('k')
     plt.show()
