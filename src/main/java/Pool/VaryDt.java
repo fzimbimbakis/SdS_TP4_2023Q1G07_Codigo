@@ -39,7 +39,7 @@ public class VaryDt {
         List<DynamicSystem> systems = new ArrayList<>();
 
         // ejecuta algunas tareas en paralelo
-        for (int i = 2; i < 7; i++) {
+        for (int i = 2; i < 5; i++) {
             systems.add(
                     new DynamicSystem(
                             copy(particles, Math.pow(10, -i), Particle.Color.values()[i - 2]),
@@ -67,7 +67,7 @@ public class VaryDt {
 
         List<List<Double>> phis = new ArrayList<>();
 
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 2; i++) {
 
             phis.add(new ArrayList<>());
 

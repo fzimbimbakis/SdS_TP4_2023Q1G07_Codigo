@@ -2,7 +2,6 @@ package Pool.models.particle;
 
 import Pool.algorithms.DynamicsAlgorithm;
 import Pool.algorithms.GearPredictorCorrector;
-import Pool.models.Cell;
 import Pool.models.Pair;
 
 import java.util.List;
@@ -52,7 +51,7 @@ public class Particle {
 
 
     public void move(List<Particle> particles) {
-
+        algorithm.prediction();
         this.updateForce(particles);
         this.algorithm.calculateNext();
 
@@ -99,8 +98,6 @@ public class Particle {
         );
 
         double f = (modulo - radiusSum) * K;
-
-
 
         return new Pair<>(
                 (deltaX / modulo) * f,

@@ -47,11 +47,11 @@ public class DynamicSystem {
         int counter = 1;
         while (time < maxT) {
 
-            for (Particle particle : particles) {
-                grid.remove(particle);
-                particle.prediction();
-                grid.add(particle);
-            }
+//            for (Particle particle : particles) {
+//                grid.remove(particle);
+//                particle.prediction();
+//                grid.add(particle);
+//            }
 
             for (Particle particle : particles) {
                 grid.remove(particle);
