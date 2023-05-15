@@ -32,14 +32,14 @@ public class Grid {
         return particles;
     }
 
-    public void remove(Particle particle){
+    public boolean remove(Particle particle){
         double x = Math.min(MAX_X, particle.getX());
         x = Math.max(0, x);
         double y = Math.min(MAX_Y, particle.getY());
         y = Math.max(0, y);
         Cell cell = getCell(x, y);
         if (cell != null) {
-            cell.remove(particle);
+            return cell.remove(particle);
         }else throw new IllegalStateException("Cell does not exists");
     }
 
