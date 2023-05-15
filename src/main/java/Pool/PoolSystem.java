@@ -61,14 +61,18 @@ public class PoolSystem {
                 }
 
                 for (FixedParticle particle : fixedParticleList) {
-                    List<Particle> collision = particle.getCollisions(grid.getNeighbours(particle.getPosition().getX(), particle.getPosition().getY()));
+                    List<Particle> neighbours = grid.getNeighbours(particle.getPosition().getX(), particle.getPosition().getY());
+                    List<Particle> collision = particle.getCollisions(neighbours);
+                    List<Particle> extra = new ArrayList<>();
                     collision.forEach(
                             p -> {
-                                grid.remove(p);
-                                particles.remove(p);
+                                boolean a = grid.remove(p);
+                                boolean b = this.particles.remove(p);
+                                if(!a && !b)
+                                    extra.add(p);
                             }
                     );
-                    ballsIn += collision.size();
+                    ballsIn += collision.size() - extra.size();
                 }
 
 //                if (counter++ % animationDT == 0)

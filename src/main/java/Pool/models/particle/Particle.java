@@ -5,6 +5,7 @@ import Pool.algorithms.GearPredictorCorrector;
 import Pool.models.Pair;
 
 import java.util.List;
+import java.util.Objects;
 
 public class Particle {
     public enum Color{
@@ -167,5 +168,18 @@ public class Particle {
 
     public Pair<Double> getPosition() {
         return position;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Particle particle = (Particle) o;
+        return color == particle.color && Objects.equals(position, particle.position) && Objects.equals(velocity, particle.velocity) && Objects.equals(radius, particle.radius) && Objects.equals(mass, particle.mass) && Objects.equals(algorithm, particle.algorithm) && Objects.equals(force, particle.force);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(color, position, velocity, radius, mass, algorithm, force);
     }
 }
