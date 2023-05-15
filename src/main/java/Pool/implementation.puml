@@ -1,0 +1,79 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+class DynamicSystem{
+- List<Particle> particles
+- List<FixedParticle> fixedParticleList
+- Double dt
+- Double maxT
++ void run()
+}
+
+
+class Grid{
+- {static} Double MAX_X
+- {static} Double MAX_Y
+- {static} Double CELL_DIMENSION
+-  Map<Double, Map<Double, Cell>> hashMap
+
++ List<Particle> getNeighbours(Double x, Double y)
++ void remove(Particle particle)
++ void add(Particle particle)
+}
+
+class Cell{
+- List<Particle> particles
++ void add(Particle particle)
++ boolean remove(Particle particle)
++ List<Particle> getParticles()
+}
+
+
+class Particle{
+- Cell cell
+- {static} Double MAX_X
+- {static} Double MAX_Y
+- {static} Double K
+- Pair<Double> position;
+- Pair<Double> velocity;
+- Double radius;
+- Double mass;
+- DynamicsAlgorithm algorithm;
+- Pair<Double> force;
+
++ void move(List<Particle> particles)
++ void prediction()
++ void updateForce(List<Particle> particles)
+
+}
+
+interface DynamicsAlgorithm{
+void prediction()
+void calculateNext()
+void setParticle(Particle particle)
+}
+
+class GearPredictorCorrector{
+- Particle particle;
+- Double[] rX
+- Double[] rY
+- {static} double[] alphas
++ void setParticle(Particle particle)
++ void prediction()
++ void calculateNext()
+- Pair<Double> getDeltaR2()
+- void correct(Pair deltaR2)
+}
+
+
+
+DynamicsAlgorithm <|-- GearPredictorCorrector
+DynamicSystem *-- Particle
+
+
+Cell *-- Particle
+Grid *-- Cell
+DynamicsAlgorithm *-- Particle
+
+
+@enduml
