@@ -26,7 +26,7 @@ public class VaryWhiteYAnimation {
         PoolSystem system = new PoolSystem(config, yMin, 8, "./src/main/resources/animation_"+yMin+".xyz");
         list.add(system);
 
-        Runnable worker = new ThreadAux(
+        Runnable worker = new ThreadAuxAnimation(
                 yMin,
                 system
         );
@@ -35,7 +35,7 @@ public class VaryWhiteYAnimation {
         PoolSystem system2 = new PoolSystem(config, yMax, 8, "./src/main/resources/animation_"+yMax+".xyz");
         list.add(system2);
 
-        Runnable worker2 = new ThreadAux(
+        Runnable worker2 = new ThreadAuxAnimation(
                 yMax,
                 system2
         );
